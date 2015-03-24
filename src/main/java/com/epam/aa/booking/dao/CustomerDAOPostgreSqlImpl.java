@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 //TODO: DAOException
-public class CustomerDAO {
+public class CustomerDAOPostgreSqlImpl implements CustomerDao {
     private static boolean customersTableCreated;
     public void insert(Customer customer) {
         Connection con = null;
@@ -60,13 +60,13 @@ public class CustomerDAO {
 
             pst.executeUpdate();
         } catch (NamingException e) {
-            Logger logger = Logger.getLogger(CustomerDAO.class.getName());
+            Logger logger = Logger.getLogger(CustomerDAOPostgreSqlImpl.class.getName());
             logger.log(Level.SEVERE, e.getMessage(), e);
         } catch (ClassNotFoundException e) {
-            Logger logger = Logger.getLogger(CustomerDAO.class.getName());
+            Logger logger = Logger.getLogger(CustomerDAOPostgreSqlImpl.class.getName());
             logger.log(Level.SEVERE, e.getMessage(), e);
         } catch (SQLException e) {
-            Logger logger = Logger.getLogger(CustomerDAO.class.getName());
+            Logger logger = Logger.getLogger(CustomerDAOPostgreSqlImpl.class.getName());
             logger.log(Level.SEVERE, e.getMessage(), e);
         } finally {
             try {
@@ -84,7 +84,7 @@ public class CustomerDAO {
                 }
 
             } catch (SQLException ex) {
-                Logger lgr = Logger.getLogger(CustomerDAO.class.getName());
+                Logger lgr = Logger.getLogger(CustomerDAOPostgreSqlImpl.class.getName());
                 lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
         }
