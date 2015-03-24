@@ -3,6 +3,10 @@ package com.epam.aa.booking.dao;
 import com.epam.aa.booking.model.Customer;
 import com.epam.aa.booking.util.Util;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,18 +18,20 @@ public class CustomerDAO {
         Connection con = null;
         Statement st = null;
         PreparedStatement pst = null;
+        DataSource ds;
         ResultSet rs = null;
-        String url = "jdbc:postgresql://localhost/booking";
-        String user = "almas";
-        String password = "Q1w2e3r4t5";
 
         try {
-            try {
-                Class.forName("org.postgresql.Driver");
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-            con = DriverManager.getConnection(url, user, password);
+            // throws NamingException
+            InitialContext cxt = new InitialContext();
+            Context envContext  = (Context)cxt.lookup("java:/comp/env");
+            ds = (DataSource) envContext.lookup("jdbc/booking");
+
+            //throws ClassNotFoundException
+            Class.forName("org.postgresql.Driver");
+
+            //throws SQLException
+            con = ds.getConnection();
             st = con.createStatement();
             if (!customersTableCreated) {
                 st.execute("CREATE TABLE IF NOT EXISTS customers (" +
@@ -53,6 +59,12 @@ public class CustomerDAO {
             pst.setDate(3, birthDateToStore);
 
             pst.executeUpdate();
+        } catch (NamingException e) {
+            Logger logger = Logger.getLogger(CustomerDAO.class.getName());
+            logger.log(Level.SEVERE, e.getMessage(), e);
+        } catch (ClassNotFoundException e) {
+            Logger logger = Logger.getLogger(CustomerDAO.class.getName());
+            logger.log(Level.SEVERE, e.getMessage(), e);
         } catch (SQLException e) {
             Logger logger = Logger.getLogger(CustomerDAO.class.getName());
             logger.log(Level.SEVERE, e.getMessage(), e);
