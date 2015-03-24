@@ -15,11 +15,16 @@ public class CustomerDAO {
         Statement st = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
-
         String url = "jdbc:postgresql://localhost/booking";
         String user = "almas";
         String password = "Q1w2e3r4t5";
+
         try {
+            try {
+                Class.forName("org.postgresql.Driver");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
             con = DriverManager.getConnection(url, user, password);
             st = con.createStatement();
             if (!customersTableCreated) {

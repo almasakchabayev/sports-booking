@@ -3,6 +3,8 @@ package com.epam.aa.booking;
 import com.epam.aa.booking.model.Customer;
 import com.epam.aa.booking.util.Util;
 
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.logging.Level;
